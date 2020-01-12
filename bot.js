@@ -3,7 +3,7 @@ const bot = new Discord.Client();
 
 const [ token ] = process.argv.slice(2);
 bot
-  .login(token)
+  .login(process.env.TOKEN || token)
   .catch(console.error);
 
 bot.on('ready', () =>
