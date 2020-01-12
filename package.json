@@ -4,6 +4,8 @@
   "description": "Utility bot for The Hive Discord server",
   "main": "bot.js",
   "scripts": {
+    "start": "node bot",
+    "pull": "git pull && refresh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
