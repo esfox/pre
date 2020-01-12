@@ -1,7 +1,8 @@
 module.exports =
 {
-  catAPI: 'http://aws.random.cat/meow',
+  royalBee: '320908318610817047',
 
+  catAPI: 'http://aws.random.cat/meow',
   nico:
   {
     discordID: '327382706570657792',

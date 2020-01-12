@@ -108,6 +108,9 @@ class CommandHandler
   /* General Commands */
   async checkIfMoveToVC()
   {
+    if(!this.message.member.roles.get(config.royalBee))
+      return;
+
     const botMention = this.message.mentions.users.get(bot.user.id);
     if(!botMention)
       return;
