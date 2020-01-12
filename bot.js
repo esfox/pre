@@ -117,16 +117,21 @@ class CommandHandler
   async goatSound()
   {
     const currentVC = this.message.member.voiceChannel;
-    const voiceConnection = await currentVC.join()
+    currentVC.join()
+      .then(voiceConnection =>
+      {
+        if(!voiceConnection)
+          return;
+  
+        voiceConnection.playFile(snyk.goatSound);
+        voiceConnection.dispatcher.on('end', () =>
+          voiceConnection.disconnect());        
+      })
       .catch(error =>
       {
         console.error(error);
         this.message.channel.send('ayaw gumana ng kambing');
       });
-
-    voiceConnection.playFile(snyk.goatSound);
-    voiceConnection.dispatcher.on('end', () =>
-      voiceConnection.disconnect());
   }
   
   /* General Commands */
