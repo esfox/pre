@@ -1,3 +1,4 @@
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* Glitch Wake */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -15,6 +16,9 @@ setInterval(() => {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 const Discord = require('discord.js');
+const fetch = require('node-fetch');
+const config = require('./config');
+
 const bot = new Discord.Client();
 
 const [ token ] = process.argv.slice(2);
@@ -49,7 +53,33 @@ class CommandHandler
   {
     this.message = message;
 
+    // Random Cat
+    if(message.author.id === config.nicoDiscordID)
+    {
+      if(message.content.toLowerCase().includes(config.nicoCatKeyword))
+        this.randomCat();
+    }
+      
+    // Moving to another vc
     this.checkIfMoveToVC();
+  }
+
+  async randomCat()
+  {
+    const response = await fetch(config.catAPI)
+      .then(response => response.json())
+      .catch(error =>
+      {
+        console.error(error);
+        this.message.channel.send('uh i cant get cat sorry');
+      });
+
+    const cat = response.file;
+    const embed = new Discord.RichEmbed()
+      .setColor('#36393f')
+      .setImage(cat);
+
+    this.message.channel.send(embed);
   }
   
   async checkIfMoveToVC()

@@ -1,6 +1,7 @@
 dependencies:
   discord.js: 11.5.1_opusscript@0.0.7
   express: 4.17.1
+  node-fetch: 2.6.0
   opusscript: 0.0.7
 lockfileVersion: 5.1
 packages:
@@ -304,6 +305,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
+  /node-fetch/2.6.0:
+    dev: false
+    engines:
+      node: 4.x || >=6.0.0
+    resolution:
+      integrity: sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
   /on-finished/2.3.0:
     dependencies:
       ee-first: 1.1.1
@@ -462,4 +469,5 @@ packages:
 specifiers:
   discord.js: ^11.5.1
   express: ^4.16.4
+  node-fetch: ^2.6.0
   opusscript: ^0.0.7
