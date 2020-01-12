@@ -73,7 +73,7 @@ start.sh
 .mp3
 
 # unnecessary files and folders
-other/
+others/
 old/
 music/
 shrinkwrap.yaml
