@@ -1,3 +1,19 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* Glitch Wake */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+const http = require('http');  
+const express = require('express');
+const app = express();
+app.get("/", (request, response) => {
+  console.log(Date.now() + " Ping Received");
+  response.sendStatus(200);
+});
+app.listen(process.env.PORT);
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 280000);
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
@@ -45,6 +61,9 @@ class CommandHandler
     this.message.content = this.message.content
       .replace(Discord.MessageMentions.USERS_PATTERN, '')
       .trim();
+
+    if(this.message.content.length === 0)
+      return;
 
     const voiceChannels = this.message.guild.channels
       .filter(({ type }) => type === 'voice');
