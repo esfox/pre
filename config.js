@@ -20,4 +20,11 @@ module.exports =
       'https://www.instagram.com/xjabee',
     ],
   },
+
+  snyk:
+  {
+    discordID: '233471004347727872',
+    goatKeyword: 'snyk.jr',
+    goatSound: `${__dirname}/assets/kambing.mp3`,
+  },
 }

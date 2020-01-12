@@ -1,4 +1,3 @@
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* Glitch Wake */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -23,7 +22,8 @@ const config = require('./config');
 const
 {
   nico,
-  bee
+  bee,
+  snyk,
 } = config;
 
 const [ token ] = process.argv.slice(2);
@@ -58,20 +58,28 @@ class CommandHandler
   {
     this.message = message;
 
-    const simpleText = message.content.toLowerCase();
+    const text = message.content.toLowerCase();
+    const sender = message.author.id;
 
     // Nico commands
-    if(message.author.id === nico.discordID)
+    if(sender === nico.discordID)
     {
-      if(simpleText.includes(nico.catKeyword))
+      if(text.includes(nico.catKeyword))
         this.randomCat();
     }
 
     // Bee commands
-    if(message.author.id === bee.discordID)
+    if(sender === bee.discordID)
     {
-      if(simpleText.includes(bee.linksKeyword))
+      if(text.includes(bee.linksKeyword))
         this.beeLinks();
+    }
+
+    // Snyk commands
+    if(sender === snyk.discordID)
+    {
+      if(text.includes(snyk.goatKeyword))
+        this.goatSound();
     }
       
     // Moving to another vc
@@ -103,6 +111,22 @@ class CommandHandler
     this.message.channel.send(bee.links
       .map(link => `<${link}>`)
       .join('\n'));
+  }
+
+  /* Snyk Commands */
+  async goatSound()
+  {
+    const currentVC = this.message.member.voiceChannel;
+    const voiceConnection = await currentVC.join()
+      .catch(error =>
+      {
+        console.error(error);
+        this.message.channel.send('ayaw gumana ng kambing');
+      });
+
+    voiceConnection.playFile(snyk.goatSound);
+    voiceConnection.dispatcher.on('end', () =>
+      voiceConnection.disconnect());
   }
   
   /* General Commands */
