@@ -17,9 +17,14 @@ setInterval(() => {
 
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
-const config = require('./config');
-
 const bot = new Discord.Client();
+
+const config = require('./config');
+const
+{
+  nico,
+  bee
+} = config;
 
 const [ token ] = process.argv.slice(2);
 bot
@@ -53,17 +58,27 @@ class CommandHandler
   {
     this.message = message;
 
-    // Random Cat
-    if(message.author.id === config.nicoDiscordID)
+    const simpleText = message.content.toLowerCase();
+
+    // Nico commands
+    if(message.author.id === nico.discordID)
     {
-      if(message.content.toLowerCase().includes(config.nicoCatKeyword))
+      if(simpleText.includes(nico.catKeyword))
         this.randomCat();
+    }
+
+    // Bee commands
+    if(message.author.id === bee.discordID)
+    {
+      if(simpleText.includes(bee.linksKeyword))
+        this.beeLinks();
     }
       
     // Moving to another vc
     this.checkIfMoveToVC();
   }
 
+  /* Nico Commands */
   async randomCat()
   {
     const response = await fetch(config.catAPI)
@@ -81,7 +96,16 @@ class CommandHandler
 
     this.message.channel.send(embed);
   }
+
+  /* Bee Commands */
+  beeLinks()
+  {
+    this.message.channel.send(bee.links
+      .map(link => `<${link}>`)
+      .join('\n'));
+  }
   
+  /* General Commands */
   async checkIfMoveToVC()
   {
     const botMention = this.message.mentions.users.get(bot.user.id);
