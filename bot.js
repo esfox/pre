@@ -73,6 +73,9 @@ class CommandHandler
       return this.message.reply('walang ganyang vc sir');
 
     const currentVC = this.message.member.voiceChannel;
+    if(!currentVC)
+      return this.message.reply('wala ka sa vc');
+    
     if(currentVC.id === matchingVC.id)
       return this.message.reply("nandiyan ka na pre.");
 
