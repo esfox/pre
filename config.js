@@ -30,7 +30,7 @@ module.exports =
 
   levin:
   {
-    discordID: '249389888539983875', 
+    discordID: '249389888539983875',
     recipeKeyword: 'recipe',
     recipeAPI: 'https://api.spoonacular.com/recipes/random',
   },

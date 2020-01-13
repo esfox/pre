@@ -59,11 +59,12 @@ class CommandHandler
   {
     this.message = message;
 
+    const sender = message.author.id;
     const text = message.content
       .replace(Discord.MessageMentions.USERS_PATTERN, '')
       .toLowerCase()
       .trim();
-    const sender = message.author.id;
+    this.text = text;
 
     // Nico commands
     if(sender === nico.discordID)
@@ -92,7 +93,7 @@ class CommandHandler
       if
       (
         message.mentions.users.get(bot.user.id) !== undefined &&
-        text === levin.recipeKeyword
+        text.startsWith(levin.recipeKeyword)
       )
         this.getRandomRecipe();
     }
@@ -155,12 +156,25 @@ class CommandHandler
   {
     const apiKey = process.env.FOOD_API_KEY ||
       require('./others/secrets.js').foodAPIKey;
-      
+
+    const textWithoutKeyword = this.text
+      .replace(levin.recipeKeyword, '')
+      .trim();
+
+    const tags = textWithoutKeyword.startsWith('na')?
+      textWithoutKeyword.replace('na', '').trim() : undefined;
+
+    const url = `${levin.recipeAPI}?apiKey=${apiKey}&number=1`
+      + (tags? `&tags=${tags}` : '')
+
     const response = await request(
-      `${levin.recipeAPI}?apiKey=${apiKey}&number=1`,
+      url,
       this.message,
-      'sorry paps di na ako makakuha ng chibog'
+      'sorry paps di na ako pwede kumuha ng chibog'
     );
+
+    if(response.code === 400)
+      return this.message.reply('sorry paps di ako makakuha ng chibog');
 
     if(!response)
       return;
@@ -180,17 +194,13 @@ class CommandHandler
     if(!botMention)
       return;
 
-    this.message.content = this.message.content
-      .replace(Discord.MessageMentions.USERS_PATTERN, '')
-      .trim();
-
-    if(this.message.content.length === 0)
+    if(this.text.length === 0)
       return;
 
     const voiceChannels = this.message.guild.channels
       .filter(({ type }) => type === 'voice');
     const matchingVC = voiceChannels.find(({ name }) =>
-      name.toLowerCase().includes(this.message.content.toLowerCase()));
+      name.toLowerCase().includes(this.text.toLowerCase()));
     if(!matchingVC)
       return this.message.reply('walang ganyang vc sir');
 
