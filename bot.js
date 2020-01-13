@@ -24,6 +24,7 @@ const
   nico,
   bee,
   snyk,
+  levin,
 } = config;
 
 const [ token ] = process.argv.slice(2);
@@ -58,7 +59,10 @@ class CommandHandler
   {
     this.message = message;
 
-    const text = message.content.toLowerCase();
+    const text = message.content
+      .replace(Discord.MessageMentions.USERS_PATTERN, '')
+      .toLowerCase()
+      .trim();
     const sender = message.author.id;
 
     // Nico commands
@@ -81,6 +85,17 @@ class CommandHandler
       if(text.includes(snyk.goatKeyword))
         this.goatSound();
     }
+
+    // Levin commands
+    if(sender === levin.discordID)
+    {
+      if
+      (
+        message.mentions.users.get(bot.user.id) !== undefined &&
+        text === levin.recipeKeyword
+      )
+        this.getRandomRecipe();
+    }
       
     // Moving to another vc
     this.checkIfMoveToVC();
@@ -89,13 +104,14 @@ class CommandHandler
   /* Nico Commands */
   async randomCat()
   {
-    const response = await fetch(config.catAPI)
-      .then(response => response.json())
-      .catch(error =>
-      {
-        console.error(error);
-        this.message.channel.send('uh i cant get cat sorry');
-      });
+    const response = await request(
+      config.catAPI,
+      this.message,
+      'uh i cant get cat sorry'
+    );
+
+    if(!response)
+      return;
 
     const cat = response.file;
     const embed = new Discord.RichEmbed()
@@ -132,6 +148,26 @@ class CommandHandler
         console.error(error);
         this.message.channel.send('ayaw gumana ng kambing');
       });
+  }
+
+  /* Levin Commands */
+  async getRandomRecipe()
+  {
+    const apiKey = process.env.FOOD_API_KEY ||
+      require('./others/secrets.js').foodAPIKey;
+      
+    const response = await request(
+      `${levin.recipeAPI}?apiKey=${apiKey}&number=1`,
+      this.message,
+      'sorry paps di na ako makakuha ng chibog'
+    );
+
+    if(!response)
+      return;
+
+    let [ recipe ] = response.recipes;
+    recipe = recipe.sourceUrl;
+    this.message.reply(`eto paps masarap daw to\n${recipe}`);
   }
   
   /* General Commands */
@@ -196,4 +232,20 @@ class CommandHandler
 
     this.message.channel.send('oks na');
   }
+}
+
+/* Helpers */
+/**
+ * @param {string} url 
+ * @param {import('discord.js').Message} message 
+ */
+function request(url, message, reply)
+{
+  return fetch(url)
+    .then(response => response.json())
+    .catch(error =>
+    {
+      console.error(error);
+      message.channel.send(reply);
+    });
 }
