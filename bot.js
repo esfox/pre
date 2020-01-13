@@ -74,21 +74,21 @@ class CommandHandler
     }
 
     // Bee commands
-    if(sender === bee.discordID)
+    else if(sender === bee.discordID)
     {
       if(text.includes(bee.linksKeyword))
         this.beeLinks();
     }
 
     // Snyk commands
-    if(sender === snyk.discordID)
+    else if(sender === snyk.discordID)
     {
       if(text.includes(snyk.goatKeyword))
         this.goatSound();
     }
 
     // Levin commands
-    if(sender === levin.discordID)
+    else if(sender === levin.discordID)
     {
       if
       (
@@ -97,9 +97,10 @@ class CommandHandler
       )
         this.getRandomRecipe();
     }
-      
+
     // Moving to another vc
-    this.checkIfMoveToVC();
+    else if(this.message.member.roles.get(config.royalBee))
+      this.checkIfMoveToVC();
   }
 
   /* Nico Commands */
@@ -187,9 +188,6 @@ class CommandHandler
   /* General Commands */
   async checkIfMoveToVC()
   {
-    if(!this.message.member.roles.get(config.royalBee))
-      return;
-
     const botMention = this.message.mentions.users.get(bot.user.id);
     if(!botMention)
       return;
