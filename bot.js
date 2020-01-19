@@ -266,8 +266,8 @@ function playAudio(message, audio, errorMessage)
         return;
 
       voiceConnection.playFile(audio);
-      voiceConnection.dispatcher.on('end', () =>
-        setTimeout(() => voiceConnection.disconnect(), 1000));
+      // voiceConnection.dispatcher.on('end', () =>
+      //   setTimeout(() => voiceConnection.disconnect(), 1000));
     })
     .catch(error =>
     {
