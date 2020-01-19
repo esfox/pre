@@ -100,6 +100,10 @@ class CommandHandler
         return this.getRandomRecipe();
     }
 
+    // Jobert Floss
+    if(text.includes('floss'))
+      return this.floss();
+
     // Moving to another vc
     if(this.message.member.roles.get(config.royalBee))
       return this.checkIfMoveToVC();
