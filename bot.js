@@ -25,6 +25,8 @@ const
   bee,
   snyk,
   levin,
+
+  audio,
 } = config;
 
 const [ token ] = process.argv.slice(2);
@@ -132,24 +134,25 @@ class CommandHandler
   }
 
   /* Snyk Commands */
-  async goatSound()
+  goatSound()
   {
-    const currentVC = this.message.member.voiceChannel;
-    currentVC.join()
-      .then(voiceConnection =>
-      {
-        if(!voiceConnection)
-          return;
+    playAudio(this.message, snyk.goatSound, 'ayaw gumana ng kambing');
+    // const currentVC = this.message.member.voiceChannel;
+    // currentVC.join()
+    //   .then(voiceConnection =>
+    //   {
+    //     if(!voiceConnection)
+    //       return;
   
-        voiceConnection.playFile(snyk.goatSound);
-        voiceConnection.dispatcher.on('end', () =>
-          voiceConnection.disconnect());        
-      })
-      .catch(error =>
-      {
-        console.error(error);
-        this.message.channel.send('ayaw gumana ng kambing');
-      });
+    //     voiceConnection.playFile(snyk.goatSound);
+    //     voiceConnection.dispatcher.on('end', () =>
+    //       voiceConnection.disconnect());        
+    //   })
+    //   .catch(error =>
+    //   {
+    //     console.error(error);
+    //     this.message.channel.send('ayaw gumana ng kambing');
+    //   });
   }
 
   /* Levin Commands */
@@ -183,6 +186,12 @@ class CommandHandler
     let [ recipe ] = response.recipes;
     recipe = recipe.sourceUrl;
     this.message.reply(`eto paps masarap daw to\n${recipe}`);
+  }
+
+  /* Other Commands */
+  floss()
+  {
+    playAudio(this.message, audio.floss, 'tulog si jobert');
   }
   
   /* General Commands */
@@ -255,5 +264,26 @@ function request(url, message, reply)
     {
       console.error(error);
       message.channel.send(reply);
+    });
+}
+
+/** @param {import('discord.js').Message} message */
+function playAudio(message, audio, errorMessage)
+{
+  const currentVC = message.member.voiceChannel;
+  currentVC.join()
+    .then(voiceConnection =>
+    {
+      if(!voiceConnection)
+        return;
+
+      voiceConnection.playFile(audio);
+      voiceConnection.dispatcher.on('end', () =>
+        voiceConnection.disconnect());        
+    })
+    .catch(error =>
+    {
+      console.error(error);
+      this.message.channel.send(errorMessage);
     });
 }

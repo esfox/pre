@@ -34,4 +34,9 @@ module.exports =
     recipeKeyword: 'recipe',
     recipeAPI: 'https://api.spoonacular.com/recipes/random',
   },
+
+  audio:
+  {
+    floss: `${__dirname}/assets/floss.mp3`,
+  },
 }
