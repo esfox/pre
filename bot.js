@@ -72,37 +72,37 @@ class CommandHandler
     if(sender === nico.discordID)
     {
       if(text.includes(nico.catKeyword))
-        this.randomCat();
+        return this.randomCat();
     }
 
     // Bee commands
-    else if(sender === bee.discordID)
+    if(sender === bee.discordID)
     {
       if(text.includes(bee.linksKeyword))
-        this.beeLinks();
+        return this.beeLinks();
     }
 
     // Snyk commands
-    else if(sender === snyk.discordID)
+    if(sender === snyk.discordID)
     {
       if(text.includes(snyk.goatKeyword))
-        this.goatSound();
+        return this.goatSound();
     }
 
     // Levin commands
-    else if(sender === levin.discordID)
+    if(sender === levin.discordID)
     {
       if
       (
         message.mentions.users.get(bot.user.id) !== undefined &&
         text.startsWith(levin.recipeKeyword)
       )
-        this.getRandomRecipe();
+        return this.getRandomRecipe();
     }
 
     // Moving to another vc
-    else if(this.message.member.roles.get(config.royalBee))
-      this.checkIfMoveToVC();
+    if(this.message.member.roles.get(config.royalBee))
+      return this.checkIfMoveToVC();
   }
 
   /* Nico Commands */
@@ -137,22 +137,6 @@ class CommandHandler
   goatSound()
   {
     playAudio(this.message, snyk.goatSound, 'ayaw gumana ng kambing');
-    // const currentVC = this.message.member.voiceChannel;
-    // currentVC.join()
-    //   .then(voiceConnection =>
-    //   {
-    //     if(!voiceConnection)
-    //       return;
-  
-    //     voiceConnection.playFile(snyk.goatSound);
-    //     voiceConnection.dispatcher.on('end', () =>
-    //       voiceConnection.disconnect());        
-    //   })
-    //   .catch(error =>
-    //   {
-    //     console.error(error);
-    //     this.message.channel.send('ayaw gumana ng kambing');
-    //   });
   }
 
   /* Levin Commands */
