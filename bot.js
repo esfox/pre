@@ -100,6 +100,9 @@ class CommandHandler
         return this.getRandomRecipe();
     }
 
+    if(text.includes('feeling good') || text.includes('feel good'))
+      return this.feelingGoodMan();
+
     // Jobert Floss
     if(text.includes('floss'))
       return this.floss();
@@ -180,6 +183,11 @@ class CommandHandler
   floss()
   {
     playAudio(this.message, audio.floss, 'tulog si jobert');
+  }
+
+  feelingGoodMan()
+  {
+    playAudio(this.message, audio.feelingGoodMan, 'not feeling good pre');
   }
   
   /* General Commands */
