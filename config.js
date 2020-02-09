@@ -38,6 +38,7 @@ module.exports =
   audio:
   {
     floss: `${__dirname}/assets/floss.mp3`,
-    feelingGoodMan: `${__dirname}/assets/Feeling Good Man.mp3`,
+    feelingGoodMan: `${__dirname}/assets/feel good.mp3`,
   },
 }
+
